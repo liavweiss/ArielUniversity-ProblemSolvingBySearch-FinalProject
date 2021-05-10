@@ -465,7 +465,7 @@ public class State implements Comparable<State> {
         for (int i = 0; i < this.board.length; i++) {
             for (int j = 0; j < this.board[i].length; j++) {
                 int[] goalPlace = searchGoalNumberPlace(goal, this.board[i][j]);
-                ans += (Math.abs(i - goalPlace[0]) + Math.abs(j - goalPlace[1])) * 5;
+                ans += (Math.abs(i - goalPlace[0]) + Math.abs(j - goalPlace[1])) ;
             }
         }
         return ans;

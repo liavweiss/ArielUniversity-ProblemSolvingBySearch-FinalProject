@@ -126,7 +126,7 @@ public class PuzzleGameAlgo {
         return "";
     }
 
-    private void AStar(State start, Vector<State> Goals) {
+    public void AStar(State start, Vector<State> Goals) {
         PriorityQueue<State> pq = new PriorityQueue<>();
         Hashtable<String, State> closedList = new Hashtable<>();
         Hashtable<String, State> openList = new Hashtable<>();
@@ -158,7 +158,7 @@ public class PuzzleGameAlgo {
         }
     }
 
-    private void IDAStar(State start, Vector<State> Goals) {
+    public void IDAStar(State start, Vector<State> Goals) {
         Stack<State> st = new Stack<>();
         Hashtable<String, State> openList = new Hashtable<>();
         int t = start.heuristicFunc(start.getGoal());
@@ -296,6 +296,32 @@ public class PuzzleGameAlgo {
         System.out.println("Cost: " + g.getCost());
     }
 
+    /**
+     * This function call the specific algorithm from the input.
+     * (its use for the main of the program).
+     * @param algorithm - the algorithm we will use.
+     */
+    public void collAlgorithm(String algorithm){
+        switch (algorithm){
+            case "BFS":
+                this.BFS(this.getInitialState(), this.getGoals());
+                break;
+            case "DFID":
+                this.DFID(this.getInitialState(), this.getGoals());
+                break;
+            case "A*":
+                this.AStar(this.getInitialState(), this.getGoals());
+                break;
+            case "IDA*":
+                this.IDAStar(this.getInitialState(), this.getGoals());
+                break;
+            case "DFBnB":
+                this.DFBnB(this.getInitialState(), this.getGoals());
+                break;
+        }
+    }
+
+
     public static void main(String[] args) {
 //        //input1
 //        int[][] arr = {{1, 2, 3, 4}, {5, 6, 11, 7}, {9, 10, 8, 0}};
@@ -322,7 +348,7 @@ public class PuzzleGameAlgo {
         vec.add(end);
         PuzzleGameAlgo puzzle = new PuzzleGameAlgo(start, vec);
         double startTime = System.nanoTime();
-        puzzle.DFBnB(puzzle.initialState, puzzle.goals);
+        puzzle.AStar(puzzle.initialState, puzzle.goals);
         double stopTime = System.nanoTime();
         System.out.println((stopTime - startTime) / 1000000000 + " second");
 

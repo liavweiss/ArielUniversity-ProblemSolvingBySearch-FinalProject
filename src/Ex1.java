@@ -23,6 +23,7 @@ public class Ex1 {
                     if (flag == false) {
                         ans[0] = i;
                         ans[1] = j;
+                        flag = true;
                     } else {
                         ans[2] = i;
                         ans[3] = j;
@@ -39,6 +40,7 @@ public class Ex1 {
     }
 
 
+
     public static void main(String[] args) throws FileNotFoundException {
 
         boolean withOpen = false;
@@ -49,7 +51,7 @@ public class Ex1 {
         String[] rowAndColStr;
 
 
-        File file = new File("input1.txt");
+        File file = new File("input2.txt");
         Scanner scanner = new Scanner(file);
 
         //check which algorithms to use.
@@ -113,7 +115,7 @@ public class Ex1 {
 
         // init all the puzzle game and run the program.
         int [] emptyPanelStart = emptyPanel(startBoard);
-        State start = new State(startBoard,0,null,startBoard,emptyPanelStart[0],emptyPanelStart[1],emptyPanelStart[2],emptyPanelStart[3]);
+        State start = new State(startBoard,0,null,goalBoard,emptyPanelStart[0],emptyPanelStart[1],emptyPanelStart[2],emptyPanelStart[3]);
         int [] emptyPanelGoal = emptyPanel(goalBoard);
         State goal = new State(goalBoard,0,null,goalBoard,emptyPanelGoal[0],emptyPanelGoal[1],emptyPanelGoal[2],emptyPanelGoal[3]);
 
@@ -121,7 +123,7 @@ public class Ex1 {
         v.add(goal);
         PuzzleGameAlgo puzzle = new PuzzleGameAlgo(start, v);
         double startTime = System.nanoTime();
-        puzzle.BFS(puzzle.getInitialState(), puzzle.getGoals());
+        puzzle.collAlgorithm(algorithm);
         double stopTime = System.nanoTime();
         if(withTime == true) {
             System.out.println((stopTime - startTime) / 1000000000 + " second");
