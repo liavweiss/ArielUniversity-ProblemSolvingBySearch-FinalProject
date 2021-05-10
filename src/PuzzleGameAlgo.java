@@ -33,6 +33,24 @@ public class PuzzleGameAlgo {
         this.goals = g;
     }
 
+    /**
+     * This method return the InitialState of this puzzle game (state start).
+     *
+     * @return - InitialState.
+     */
+    public State getInitialState(){
+        return this.initialState;
+    }
+
+    /**
+     * This method return vector of goals state of this puzzle game.
+     *
+     * @return -  vector of goals.
+     */
+    public Vector<State> getGoals(){
+        return this.goals;
+    }
+
     public void BFS(State start, Vector<State> Goals) {
         if (Goals.contains(start)) {
             print(start);
@@ -152,7 +170,7 @@ public class PuzzleGameAlgo {
             while (!st.isEmpty()) {
                 State s = st.pop();
                 if (s.getTag().equals("out")) {
-                    openList.remove(s);
+                    openList.remove(s.toString());
                 } else {
                     s.setTag("out");
                     st.push(s);
@@ -187,12 +205,11 @@ public class PuzzleGameAlgo {
                 }
             }
             t = minF;
-            start.setTag("out");
+            start.setTag("");
         }
-
     }
 
-    private void DFBnB(State start, Vector<State> Goals) {
+    public void DFBnB(State start, Vector<State> Goals) {
         Stack<State> st = new Stack<>();
         Hashtable<String, State> openList = new Hashtable<>();
         st.push(start);
@@ -281,17 +298,17 @@ public class PuzzleGameAlgo {
 
     public static void main(String[] args) {
 //        //input1
-        int[][] arr = {{1, 2, 3, 4}, {5, 6, 11, 7}, {9, 10, 8, 0}};
-        int[][] arr2 = {{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 0}};
-        State start = new State(arr, 0, null, arr2, 2, 3);
-        State end = new State(arr2, 0, null, arr2, 2, 3);
+//        int[][] arr = {{1, 2, 3, 4}, {5, 6, 11, 7}, {9, 10, 8, 0}};
+//        int[][] arr2 = {{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 0}};
+//        State start = new State(arr, 0, null, arr2, 2, 3);
+//        State end = new State(arr2, 0, null, arr2, 2, 3);
 
 
-//        //input2.
-//        int[][] arr = {{1,0,4}, {3,5,6}, {2,0,7}};
-//        int[][] arr2 = {{1,2,3},{4,5,6},{7,0,0}};
-//        State start = new State(arr, 0, null,arr2, 0, 1, 2,1);
-//        State end = new State(arr2, 0, null,arr2, 2, 1,2,2);
+        //input2.
+        int[][] arr = {{1,0,4}, {3,5,6}, {2,0,7}};
+        int[][] arr2 = {{1,2,3},{4,5,6},{7,0,0}};
+        State start = new State(arr, 0, null,arr2, 0, 1, 2,1);
+        State end = new State(arr2, 0, null,arr2, 2, 1,2,2);
 
 //        //my input
 //        int[][] arr = {{2,3},
@@ -305,7 +322,7 @@ public class PuzzleGameAlgo {
         vec.add(end);
         PuzzleGameAlgo puzzle = new PuzzleGameAlgo(start, vec);
         double startTime = System.nanoTime();
-        puzzle.IDAStar(puzzle.initialState, puzzle.goals);
+        puzzle.DFBnB(puzzle.initialState, puzzle.goals);
         double stopTime = System.nanoTime();
         System.out.println((stopTime - startTime) / 1000000000 + " second");
 

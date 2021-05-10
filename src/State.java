@@ -463,9 +463,9 @@ public class State implements Comparable<State> {
     public int heuristicFunc(int[][] goal) {
         int ans = 0;
         for (int i = 0; i < this.board.length; i++) {
-            for (int j = 0; j < this.board[0].length; j++) {
+            for (int j = 0; j < this.board[i].length; j++) {
                 int[] goalPlace = searchGoalNumberPlace(goal, this.board[i][j]);
-                ans += (Math.abs(i - goalPlace[0]) + Math.abs(j - goalPlace[1]));
+                ans += (Math.abs(i - goalPlace[0]) + Math.abs(j - goalPlace[1])) * 5;
             }
         }
         return ans;
@@ -489,6 +489,7 @@ public class State implements Comparable<State> {
                 }
             }
         }
+
         return ans;
     }
 
