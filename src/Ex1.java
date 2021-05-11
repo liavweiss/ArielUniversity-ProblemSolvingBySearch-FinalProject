@@ -122,11 +122,11 @@ public class Ex1 {
         Vector<State> v = new Vector<>();
         v.add(goal);
         PuzzleGameAlgo puzzle = new PuzzleGameAlgo(start, v);
-        double startTime = System.nanoTime();
+        double startTime = System.currentTimeMillis();
         puzzle.collAlgorithm(algorithm);
-        double stopTime = System.nanoTime();
+        double stopTime = System.currentTimeMillis();
         if(withTime == true) {
-            System.out.println((stopTime - startTime) / 1000000000 + " second");
+            System.out.println((stopTime - startTime) / 1000 + " second");
         }
 
 

@@ -38,7 +38,7 @@ public class PuzzleGameAlgo {
      *
      * @return - InitialState.
      */
-    public State getInitialState(){
+    public State getInitialState() {
         return this.initialState;
     }
 
@@ -47,10 +47,25 @@ public class PuzzleGameAlgo {
      *
      * @return -  vector of goals.
      */
-    public Vector<State> getGoals(){
+    public Vector<State> getGoals() {
         return this.goals;
     }
 
+
+    /**
+     * In this algorithm we will first initialize a queue and hash table.
+     * open list - for check if its contain a certain state in O(1).
+     * close list - for all the state we have finished developing.
+     * We will insert the starting vertex into them,as long as the queue is not empty we will continue
+     * to develop the sons of the state coming out of the queue, and we will put them in the queue.
+     * Each time we remove a state from the queue we will check if it is the target vertex.
+     * Time complexity: O(b^d).
+     * Space complexity: O(b^d).
+     * (Where b is branching factor and d is the solution depth).
+     *
+     * @param start - the state we start from him.
+     * @param Goals - vector(list) of the goals state.
+     */
     public void BFS(State start, Vector<State> Goals) {
         if (Goals.contains(start)) {
             print(start);
@@ -85,18 +100,39 @@ public class PuzzleGameAlgo {
         }
     }
 
+    /**
+     * DFID first performs a DFS to depth one. Then starts over executing DFS to depth two.
+     * Continue to run DFS to successively greater depth until a solution is found.
+     * Do this using the method limitedDFS.
+     * Time complexity: O(b^d).
+     * Space complexity: O(db) -> O(d).
+     * (Where b is branching factor and d is the maximum depth of search tree).
+     *
+     * @param start - the state we start from him.
+     * @param Goals - vector(list) of the goals state.
+     */
     public void DFID(State start, Vector<State> Goals) {
         String cutoff = "cutOff";
         for (int depth = 1; depth < Integer.MAX_VALUE; depth++) {
             Hashtable<String, State> openList = new Hashtable<>();
-            String result = limited_DFS(start, Goals, depth, openList);
+            String result = limitedDFS(start, Goals, depth, openList);
             if (!result.equals(cutoff)) return;
         }
     }
 
-    private String limited_DFS(State start, Vector<State> goal, int limit, Hashtable<String, State> openList) {
+    /**
+     * Private method to find the state goal each time with different limit.
+     *
+     * @param start    - the state we start from him.
+     * @param Goals    - vector(list) of the goals state.
+     * @param limit    - the limit at which the algorithm will stop searching
+     * @param openList - for check if its contain a certain state in O(1).
+     * @return - string, "fail" if its fail or "cutOff" if its need to continue to the next limit.
+     * if its find the goal state it will print it.
+     */
+    private String limitedDFS(State start, Vector<State> Goals, int limit, Hashtable<String, State> openList) {
         String cutOff = "cutOff";
-        if (goal.contains(start)) {
+        if (Goals.contains(start)) {
             print(start);
         } else if (limit == 0) {
             return "cutOff";
@@ -109,7 +145,7 @@ public class PuzzleGameAlgo {
                 if (openList.containsKey(s.toString())) {
                     continue;
                 }
-                String result = limited_DFS(s, goal, limit - 1, openList);
+                String result = limitedDFS(s, Goals, limit - 1, openList);
                 if (result.equals(cutOff)) {
                     isCutOff = "true";
                 } else if (!result.equals("fail")) {
@@ -161,7 +197,7 @@ public class PuzzleGameAlgo {
     public void IDAStar(State start, Vector<State> Goals) {
         Stack<State> st = new Stack<>();
         Hashtable<String, State> openList = new Hashtable<>();
-        int t = start.heuristicFunc(start.getGoal());
+        int t = start.manhattanDistance(start.getGoal());
         int infinity = Integer.MAX_VALUE;
         while (t != infinity) {
             int minF = infinity;
@@ -177,7 +213,7 @@ public class PuzzleGameAlgo {
                     ArrayList<State> arrState = s.performingOperators(s.getBoard(), s.getI1(), s.getJ1(), s.getI2(), s.getJ2());
                     for (State operator : arrState) {
                         numOfState++;
-                        int funcOperator = operator.getCost() + operator.heuristicFunc(operator.getGoal()); // f(operator) = g(operator) + h(operator)
+                        int funcOperator = operator.getCost() + operator.manhattanDistance(operator.getGoal()); // f(operator) = g(operator) + h(operator)
                         if (funcOperator > t) {
                             minF = Math.min(minF, funcOperator);
                             continue;
@@ -187,7 +223,7 @@ public class PuzzleGameAlgo {
                             continue;
                         }
                         if (operatorTag != null && !operatorTag.getTag().equals("out")) {
-                            int funcOperatorTag = operatorTag.getCost() + operatorTag.heuristicFunc(operatorTag.getGoal());  // f(operatorTag) = g(operatorTag) + h(operatorTag)
+                            int funcOperatorTag = operatorTag.getCost() + operatorTag.manhattanDistance(operatorTag.getGoal());  // f(operatorTag) = g(operatorTag) + h(operatorTag)
                             if (funcOperatorTag > funcOperator) {
                                 openList.remove(operatorTag.toString());
                                 st.remove(operatorTag);
@@ -231,7 +267,7 @@ public class PuzzleGameAlgo {
                 while (n < arrState.size()) {
                     State operator = arrState.get(n++);
                     numOfState++;
-                    int funcOperator = operator.getCost() + operator.heuristicFunc(operator.getGoal());  // f(operator) = g(operator) + h(operator)
+                    int funcOperator = operator.getCost() + operator.manhattanDistance(operator.getGoal());  // f(operator) = g(operator) + h(operator)
                     if (funcOperator >= t) {
                         while (counter < arrState.size()) {
                             arrState.remove(counter++);
@@ -240,7 +276,7 @@ public class PuzzleGameAlgo {
                     } else if (openList.containsKey(operator.toString()) && openList.get(operator.toString()).equals("out")) {
                         arrState.remove(operator);
                     } else if (openList.containsKey(operator.toString()) && !openList.get(operator.toString()).equals("out")) {
-                        int funcOperatorTag = openList.get(operator.toString()).heuristicFunc(openList.get(operator.toString()).getGoal());  // f(funcOperatorTag) = g(funcOperatorTag) + h(funcOperatorTag)
+                        int funcOperatorTag = openList.get(operator.toString()).manhattanDistance(openList.get(operator.toString()).getGoal());  // f(funcOperatorTag) = g(funcOperatorTag) + h(funcOperatorTag)
                         if (funcOperator >= funcOperatorTag) {
                             arrState.remove(operator);
                         } else {
@@ -299,10 +335,11 @@ public class PuzzleGameAlgo {
     /**
      * This function call the specific algorithm from the input.
      * (its use for the main of the program).
+     *
      * @param algorithm - the algorithm we will use.
      */
-    public void collAlgorithm(String algorithm){
-        switch (algorithm){
+    public void collAlgorithm(String algorithm) {
+        switch (algorithm) {
             case "BFS":
                 this.BFS(this.getInitialState(), this.getGoals());
                 break;
@@ -331,10 +368,10 @@ public class PuzzleGameAlgo {
 
 
         //input2.
-        int[][] arr = {{1,0,4}, {3,5,6}, {2,0,7}};
-        int[][] arr2 = {{1,2,3},{4,5,6},{7,0,0}};
-        State start = new State(arr, 0, null,arr2, 0, 1, 2,1);
-        State end = new State(arr2, 0, null,arr2, 2, 1,2,2);
+        int[][] arr = {{1, 0, 4}, {3, 5, 6}, {2, 0, 7}};
+        int[][] arr2 = {{1, 2, 3}, {4, 5, 6}, {7, 0, 0}};
+        State start = new State(arr, 0, null, arr2, 0, 1, 2, 1);
+        State end = new State(arr2, 0, null, arr2, 2, 1, 2, 2);
 
 //        //my input
 //        int[][] arr = {{2,3},
@@ -347,10 +384,10 @@ public class PuzzleGameAlgo {
         Vector<State> vec = new Vector<>();
         vec.add(end);
         PuzzleGameAlgo puzzle = new PuzzleGameAlgo(start, vec);
-        double startTime = System.nanoTime();
+        double startTime = System.currentTimeMillis();
         puzzle.AStar(puzzle.initialState, puzzle.goals);
-        double stopTime = System.nanoTime();
-        System.out.println((stopTime - startTime) / 1000000000 + " second");
+        double stopTime = System.currentTimeMillis();
+        System.out.println((stopTime - startTime) / 1000 + " second");
 
 
     }

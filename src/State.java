@@ -95,6 +95,7 @@ public class State implements Comparable<State> {
         return this.pre;
     }
 
+
     /**
      * This method return string how we got to this state.
      *
@@ -201,7 +202,7 @@ public class State implements Comparable<State> {
      * @param j1 - The first col that containing an empty panel.
      * @param i2 - The second row that containing an empty panel.
      * @param j2 - The second col that containing an empty panel.
-     * @return
+     * @return - 1 - Horizontal, -1 - vertical, 0 - o.t.
      */
     private int ifClose(int i1, int j1, int i2, int j2) {
         if (i1 == -1 || i2 == -1 || j1 == -1 || j2 == -1) return 0;
@@ -301,7 +302,7 @@ public class State implements Comparable<State> {
         if (j1 == board[0].length - 1) {
             return null;
         }
-        State ans = new State(deepCopyArr(board), this.cost + 5, this, this.goalStateBoard, i1, j1 + 1, i2, j2 + 1);
+        State ans = new State(deepCopyArr(board), this.cost + 6, this, this.goalStateBoard, i1, j1 + 1, i2, j2 + 1);
         ans.board[i1][j1] = ans.board[i1][j1 + 1];
         ans.board[i1][j1 + 1] = 0;
         ans.board[i2][j2] = ans.board[i2][j2 + 1];
@@ -324,7 +325,7 @@ public class State implements Comparable<State> {
         if (j1 == 0) {
             return null;
         }
-        State ans = new State(deepCopyArr(board), this.cost + 5, this, this.goalStateBoard, i1, j1 - 1, i2, j2 - 1);
+        State ans = new State(deepCopyArr(board), this.cost + 6, this, this.goalStateBoard, i1, j1 - 1, i2, j2 - 1);
         ans.board[i1][j1] = ans.board[i1][j1 - 1];
         ans.board[i1][j1 - 1] = 0;
         ans.board[i2][j2] = ans.board[i2][j2 - 1];
@@ -347,7 +348,7 @@ public class State implements Comparable<State> {
         if (i1 == board.length - 1) {
             return null;
         }
-        State ans = new State(deepCopyArr(board), this.cost + 5, this, this.goalStateBoard, i1 + 1, j1, i2 + 1, j2);
+        State ans = new State(deepCopyArr(board), this.cost + 7, this, this.goalStateBoard, i1 + 1, j1, i2 + 1, j2);
         ans.board[i1][j1] = ans.board[i1 + 1][j1];
         ans.board[i1 + 1][j1] = 0;
         ans.board[i2][j2] = ans.board[i2 + 1][j2];
@@ -370,7 +371,7 @@ public class State implements Comparable<State> {
         if (i1 == 0) {
             return null;
         }
-        State ans = new State(deepCopyArr(board), this.cost + 5, this, this.goalStateBoard, i1 - 1, j1, i2 - 1, j2);
+        State ans = new State(deepCopyArr(board), this.cost + 7, this, this.goalStateBoard, i1 - 1, j1, i2 - 1, j2);
         ans.board[i1][j1] = ans.board[i1 - 1][j1];
         ans.board[i1 - 1][j1] = 0;
         ans.board[i2][j2] = ans.board[i2 - 1][j2];
@@ -457,19 +458,36 @@ public class State implements Comparable<State> {
     }
 
 
+//    public int llll(int[][] goal) {
+//        int ans1 = 0, ans2 = 0, ans3 = 0;
+//        int whichOperator = ifClose(this.i1, this.j1, this.i2, this.j2);
+//        int arr[][] = deepCopyArr(this.board);
+//        if (whichOperator == 0) {
+//            ans1 = heuristicFunc(goal);
+//        } else if (whichOperator == 1) {
+//            if (this.j1 != this.board[0].length - 1 && this.j1 != 0) {
+//
+//            }
+//        }
+//
+//        return Math.min(Math.min(ans1,ans2),ans3);
+//    }
+
     /**
      * A heuristic function(Manhattan distance), which measures approximately the distance of each current state from the goal state.
      */
-    public int heuristicFunc(int[][] goal) {
+    public int manhattanDistance(int[][] goal) {
         int ans = 0;
         for (int i = 0; i < this.board.length; i++) {
             for (int j = 0; j < this.board[i].length; j++) {
                 int[] goalPlace = searchGoalNumberPlace(goal, this.board[i][j]);
-                ans += (Math.abs(i - goalPlace[0]) + Math.abs(j - goalPlace[1])) ;
+                ans += ((Math.abs(i - goalPlace[0]) + Math.abs(j - goalPlace[1])) * 3);
             }
         }
+
         return ans;
     }
+
 
     /**
      * This method find the place of the row and the col on the goal board
@@ -539,8 +557,8 @@ public class State implements Comparable<State> {
      */
     @Override
     public int compareTo(State o) {
-        int thisDistance = this.heuristicFunc(this.goalStateBoard);
-        int oDistance = o.heuristicFunc(o.goalStateBoard);
+        int thisDistance = this.manhattanDistance(this.goalStateBoard);
+        int oDistance = o.manhattanDistance(o.goalStateBoard);
         if (this.getCost() + thisDistance > o.getCost() + oDistance) return 1;
         else if (this.getCost() + thisDistance < o.getCost() + oDistance) return -1;
         else if (this.getID() > o.getID()) return 1;
