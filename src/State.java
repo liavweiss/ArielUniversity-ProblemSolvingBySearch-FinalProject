@@ -17,6 +17,7 @@ public class State implements Comparable<State> {
      * @param stateID - Each situation will have its own ID  to use in  the priority queue,
      * * in a situation where two states have equality in their costs.
      * @param goalStateBoard - the target State, use for priority queue and Manhattan Distance heuristic function.
+     * @param strPre - The action that brought  the state.
      * @param tag - for IDA* algorithm(it symbolizes whether the state is marked as "out" or not).
      * @param i1 - The first row that containing an empty panel.
      * @param j1 - The first col that containing an empty panel.
@@ -29,6 +30,7 @@ public class State implements Comparable<State> {
     private String strPath;
     private static int stateID = 0;
     private int[][] goalStateBoard;
+    private String strPre;
     private String tag;
     private int i1;
     private int j1;
@@ -44,6 +46,7 @@ public class State implements Comparable<State> {
         this.cost = cost;
         this.pre = pre;
         this.goalStateBoard = goal;
+        this.strPre ="";
         this.tag = "";
         this.i1 = i1;
         this.j1 = j1;
@@ -60,6 +63,7 @@ public class State implements Comparable<State> {
         this.cost = cost;
         this.pre = pre;
         this.goalStateBoard = goal;
+        this.strPre ="";
         this.tag = "";
         this.i1 = i1;
         this.j1 = j1;
@@ -139,6 +143,22 @@ public class State implements Comparable<State> {
      */
     public int[][] getGoal() {
         return this.goalStateBoard;
+    }
+
+    /**
+     * This method return the action that brought the state.
+     *
+     * @return - strPre.
+     */
+    public String getStrPre() {
+        return this.strPre;
+    }
+
+    /**
+     * This method set the strPre.
+     */
+    public void setStrPre(String s) {
+         this.strPre = s;
     }
 
     /**
@@ -224,7 +244,14 @@ public class State implements Comparable<State> {
         if (j == this.board[0].length - 1) {
             return null;
         }
+        if(board[i][j+1] == 0){
+            return null;
+        }
+        if (this.strPre.equals(this.board[i][j+1] +"R")) {
+            return null;
+        }
         State ans = new State(deepCopyArr(board), this.cost + 5, this, this.goalStateBoard, i, j + 1, i2, j2);
+        ans.setStrPre(this.board[i][j+1] +"L");
         ans.board[i][j] = ans.board[i][j + 1];
         ans.board[i][j + 1] = 0;
         ans.strPath = ans.board[i][j] + "L";
@@ -243,7 +270,14 @@ public class State implements Comparable<State> {
         if (j == 0) {
             return null;
         }
+        if(board[i][j-1] == 0){
+            return null;
+        }
+        if (this.strPre.equals(this.board[i][j-1] + "L")) {
+            return null;
+        }
         State ans = new State(deepCopyArr(board), this.cost + 5, this, this.goalStateBoard, i, j - 1, i2, j2);
+        ans.setStrPre(this.board[i][j-1] + "R");
         ans.board[i][j] = ans.board[i][j - 1];
         ans.board[i][j - 1] = 0;
         ans.strPath = ans.board[i][j] + "R";
@@ -262,7 +296,14 @@ public class State implements Comparable<State> {
         if (i == board.length - 1) {
             return null;
         }
+        if(board[i+1][j] == 0){
+            return null;
+        }
+        if (this.strPre.equals(this.board[i+1][j] +"D")) {
+            return null;
+        }
         State ans = new State(deepCopyArr(board), this.cost + 5, this, this.goalStateBoard, i + 1, j, i2, j2);
+        ans.setStrPre(this.board[i+1][j] +"U");
         ans.board[i][j] = ans.board[i + 1][j];
         ans.board[i + 1][j] = 0;
         ans.strPath = ans.board[i][j] + "U";
@@ -281,7 +322,14 @@ public class State implements Comparable<State> {
         if (i == 0) {
             return null;
         }
+        if(board[i-1][j] == 0){
+            return null;
+        }
+        if (this.strPre.equals(this.board[i-1][j] +"U")) {
+            return null;
+        }
         State ans = new State(deepCopyArr(board), this.cost + 5, this, this.goalStateBoard, i - 1, j, i2, j2);
+        ans.setStrPre(this.board[i-1][j] +"D");
         ans.board[i][j] = ans.board[i - 1][j];
         ans.board[i - 1][j] = 0;
         ans.strPath = ans.board[i][j] + "D";
@@ -302,7 +350,11 @@ public class State implements Comparable<State> {
         if (j1 == board[0].length - 1) {
             return null;
         }
+        if (this.strPre.equals(this.board[i1][j1+1] +"&"+ this.board[i2][j2+1] +"R")) {
+            return null;
+        }
         State ans = new State(deepCopyArr(board), this.cost + 6, this, this.goalStateBoard, i1, j1 + 1, i2, j2 + 1);
+        ans.setStrPre(this.board[i1][j1+1] +"&"+ this.board[i2][j2+1] +"L");
         ans.board[i1][j1] = ans.board[i1][j1 + 1];
         ans.board[i1][j1 + 1] = 0;
         ans.board[i2][j2] = ans.board[i2][j2 + 1];
@@ -325,7 +377,11 @@ public class State implements Comparable<State> {
         if (j1 == 0) {
             return null;
         }
+        if (this.strPre.equals(this.board[i1][j1-1] +"&"+ this.board[i2][j2-1] +"L")) {
+            return null;
+        }
         State ans = new State(deepCopyArr(board), this.cost + 6, this, this.goalStateBoard, i1, j1 - 1, i2, j2 - 1);
+        ans.setStrPre(this.board[i1][j1-1] +"&"+ this.board[i2][j2-1] +"R");
         ans.board[i1][j1] = ans.board[i1][j1 - 1];
         ans.board[i1][j1 - 1] = 0;
         ans.board[i2][j2] = ans.board[i2][j2 - 1];
@@ -348,7 +404,11 @@ public class State implements Comparable<State> {
         if (i1 == board.length - 1) {
             return null;
         }
+        if (this.strPre.equals(this.board[i1+1][j1] +"&"+ this.board[i2+1][j2] +"D")) {
+            return null;
+        }
         State ans = new State(deepCopyArr(board), this.cost + 7, this, this.goalStateBoard, i1 + 1, j1, i2 + 1, j2);
+        ans.setStrPre(this.board[i1+1][j1] +"&"+ this.board[i2+1][j2] +"U");
         ans.board[i1][j1] = ans.board[i1 + 1][j1];
         ans.board[i1 + 1][j1] = 0;
         ans.board[i2][j2] = ans.board[i2 + 1][j2];
@@ -371,7 +431,11 @@ public class State implements Comparable<State> {
         if (i1 == 0) {
             return null;
         }
+        if (this.strPre.equals(this.board[i1-1][j1] +"&"+ this.board[i2-1][j2] +"U")) {
+            return null;
+        }
         State ans = new State(deepCopyArr(board), this.cost + 7, this, this.goalStateBoard, i1 - 1, j1, i2 - 1, j2);
+        ans.setStrPre(this.board[i1-1][j1] +"&"+ this.board[i2-1][j2] +"D");
         ans.board[i1][j1] = ans.board[i1 - 1][j1];
         ans.board[i1 - 1][j1] = 0;
         ans.board[i2][j2] = ans.board[i2 - 1][j2];
@@ -417,8 +481,8 @@ public class State implements Comparable<State> {
         }
 
         State left = moveLeft(board, i1, j1, i2, j2);
-        State right = moveRight(board, i1, j1, i2, j2);
         State up = moveUp(board, i1, j1, i2, j2);
+        State right = moveRight(board, i1, j1, i2, j2);
         State down = moveDown(board, i1, j1, i2, j2);
         if (!stateList.contains(left) && left != null) {
             stateList.add(left);
@@ -434,8 +498,8 @@ public class State implements Comparable<State> {
         }
         if (i2 != -1 && i1 != -1) {
             State left2 = moveLeft(board, i2, j2, i1, j1);
-            State right2 = moveRight(board, i2, j2, i1, j1);
             State up2 = moveUp(board, i2, j2, i1, j1);
+            State right2 = moveRight(board, i2, j2, i1, j1);
             State down2 = moveDown(board, i2, j2, i1, j1);
             if (!stateList.contains(left2) && left2 != null) {
                 stateList.add(left2);
@@ -451,9 +515,6 @@ public class State implements Comparable<State> {
             }
         }
 
-        if (stateList.contains(this.pre)) {
-            stateList.remove(this.pre);
-        }
         return stateList;
     }
 
@@ -474,17 +535,28 @@ public class State implements Comparable<State> {
 //    }
 
     /**
-     * A heuristic function(Manhattan distance), which measures approximately the distance of each current state from the goal state.
+     * A heuristic function(Manhattan distance), which measures approximately the distance of each current state to the goal state.
      */
     public int manhattanDistance(int[][] goal) {
         int ans = 0;
-        for (int i = 0; i < this.board.length; i++) {
-            for (int j = 0; j < this.board[i].length; j++) {
-                int[] goalPlace = searchGoalNumberPlace(goal, this.board[i][j]);
-                ans += ((Math.abs(i - goalPlace[0]) + Math.abs(j - goalPlace[1])) * 3);
+        if (i1 == -1 || i2 == -1 || j1 == -1 || j2 == -1) {
+            for (int i = 0; i < this.board.length; i++) {
+                for (int j = 0; j < this.board[i].length; j++) {
+                    int[] goalPlace = searchGoalNumberPlace(goal, this.board[i][j]);
+                    ans += ((Math.abs(i - goalPlace[0]) + Math.abs(j - goalPlace[1]))*5);
+                }
             }
         }
-
+        else{
+            for (int i = 0; i < this.board.length; i++) {
+                for (int j = 0; j < this.board[i].length; j++) {
+                    if(this.board[i][j] != 0) {
+                        int[] goalPlace = searchGoalNumberPlace(goal, this.board[i][j]);
+                        ans += ((Math.abs(i - goalPlace[0]) + Math.abs(j - goalPlace[1])) * 3);
+                    }
+                }
+            }
+        }
         return ans;
     }
 

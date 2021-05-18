@@ -1,3 +1,7 @@
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.*;
 import java.util.Collections;
 
@@ -19,18 +23,21 @@ public class PuzzleGameAlgo {
      *
      * @param initialState - The initial state of the game.
      * @param goals - A vector containing all the target states that need to be reached (at least one of them).
+     * @param withOpen - flag if print the open list or not.
      * @param numOfState - counter states.
      */
     private State initialState;
     private Vector<State> goals;
+    private boolean withOpen;
     public static int numOfState = 0;
 
     /**
      * constructor.
      */
-    public PuzzleGameAlgo(State initialState, Vector<State> g) {
+    public PuzzleGameAlgo(State initialState, Vector<State> g, boolean withOpen) {
         this.initialState = initialState;
         this.goals = g;
+        this.withOpen = withOpen;
     }
 
     /**
@@ -65,11 +72,11 @@ public class PuzzleGameAlgo {
      *
      * @param start - the state we start from him.
      * @param Goals - vector(list) of the goals state.
+     * @return - the ans of the algorithms.
      */
-    public void BFS(State start, Vector<State> Goals) {
+    public String BFS(State start, Vector<State> Goals) {
         if (Goals.contains(start)) {
-            print(start);
-            return;
+            return print(start);
         }
         Queue<State> q = new LinkedList<>();
         Hashtable<String, State> openList = new Hashtable<>();
@@ -78,6 +85,7 @@ public class PuzzleGameAlgo {
         openList.put(start.toString(), start);
         numOfState++;
         while (!q.isEmpty()) {
+            openListPrint(openList, this.withOpen);
             State s = q.poll();
             closedList.put(s.toString(), s);
             openList.remove(s.toString());
@@ -88,8 +96,7 @@ public class PuzzleGameAlgo {
                 if (!closedList.containsKey(operator.toString())) {
                     if (!openList.containsKey(operator.toString())) {
                         if (Goals.contains(operator)) {
-                            print(operator);
-                            return;
+                            return print(operator);
                         } else {
                             q.add(operator);
                             openList.put(operator.toString(), operator);
@@ -98,6 +105,7 @@ public class PuzzleGameAlgo {
                 }
             }
         }
+        return "no path";
     }
 
     /**
@@ -110,14 +118,16 @@ public class PuzzleGameAlgo {
      *
      * @param start - the state we start from him.
      * @param Goals - vector(list) of the goals state.
+     * @return - the ans of the algorithms.
      */
-    public void DFID(State start, Vector<State> Goals) {
+    public String DFID(State start, Vector<State> Goals) {
         String cutoff = "cutOff";
         for (int depth = 1; depth < Integer.MAX_VALUE; depth++) {
             Hashtable<String, State> openList = new Hashtable<>();
             String result = limitedDFS(start, Goals, depth, openList);
-            if (!result.equals(cutoff)) return;
+            if (!result.equals(cutoff)) return "no path";
         }
+        return "no path";
     }
 
     /**
@@ -162,7 +172,7 @@ public class PuzzleGameAlgo {
         return "";
     }
 
-    public void AStar(State start, Vector<State> Goals) {
+    public String AStar(State start, Vector<State> Goals) {
         PriorityQueue<State> pq = new PriorityQueue<>();
         Hashtable<String, State> closedList = new Hashtable<>();
         Hashtable<String, State> openList = new Hashtable<>();
@@ -170,11 +180,11 @@ public class PuzzleGameAlgo {
         numOfState++;
         openList.put(start.toString(), start);
         while (!pq.isEmpty()) {
+            openListPrint(openList, this.withOpen);
             State s = pq.remove();
             openList.remove(s.toString());
             if (Goals.contains(s)) {
-                print(s);
-                return;
+                return print(s);
             }
             closedList.put(s.toString(), s);
             ArrayList<State> arrState = s.performingOperators(s.getBoard(), s.getI1(), s.getJ1(), s.getI2(), s.getJ2());
@@ -192,9 +202,10 @@ public class PuzzleGameAlgo {
                 }
             }
         }
+        return "no path";
     }
 
-    public void IDAStar(State start, Vector<State> Goals) {
+    public String IDAStar(State start, Vector<State> Goals) {
         Stack<State> st = new Stack<>();
         Hashtable<String, State> openList = new Hashtable<>();
         int t = start.manhattanDistance(start.getGoal());
@@ -204,6 +215,7 @@ public class PuzzleGameAlgo {
             st.add(start);
             openList.put(start.toString(), start);
             while (!st.isEmpty()) {
+                openListPrint(openList, this.withOpen);
                 State s = st.pop();
                 if (s.getTag().equals("out")) {
                     openList.remove(s.toString());
@@ -232,8 +244,7 @@ public class PuzzleGameAlgo {
                             }
                         }
                         if (Goals.contains(operator)) {
-                            print(operator);
-                            return;
+                            return print(operator);
                         }
                         openList.put(operator.toString(), operator);
                         st.push(operator);
@@ -243,20 +254,21 @@ public class PuzzleGameAlgo {
             t = minF;
             start.setTag("");
         }
+        return "no path";
     }
 
-    public void DFBnB(State start, Vector<State> Goals) {
+    public String DFBnB(State start, Vector<State> Goals) {
         Stack<State> st = new Stack<>();
         Hashtable<String, State> openList = new Hashtable<>();
         st.push(start);
         openList.put(start.toString(), start);
         int infinity = Integer.MAX_VALUE;
         int t = infinity;
-        numOfState++;
         while (!st.isEmpty()) {
+            openListPrint(openList, this.withOpen);
             State s = st.pop();
             if (s.getTag().equals("out")) {
-                openList.remove(s);
+                openList.remove(s.toString());
             } else {
                 s.setTag("out");
                 st.push(s);
@@ -284,8 +296,7 @@ public class PuzzleGameAlgo {
                             openList.remove(operator.toString());
                         }
                     } else if (Goals.contains(operator)) {
-                        print(operator);
-                        return;
+                        return print(operator);
                     }
                     counter++;
                 }
@@ -296,6 +307,7 @@ public class PuzzleGameAlgo {
                 }
             }
         }
+        return "no path";
     }
 
 
@@ -315,7 +327,7 @@ public class PuzzleGameAlgo {
     }
 
 
-    private void print(State g) {
+    private String print(State g) {
         List<State> tempList = goalList(g);
         if (tempList.isEmpty()) {
             System.out.println("");
@@ -327,9 +339,10 @@ public class PuzzleGameAlgo {
                 ans = s.getStrPath() + "-" + ans;
             }
         }
-        System.out.println(ans);
-        System.out.println("Num: " + numOfState);
-        System.out.println("Cost: " + g.getCost());
+        ans+="\n";
+        ans+="Num: " + numOfState + "\n";
+        ans+="Cost: " + g.getCost() + "\n";
+        return ans;
     }
 
     /**
@@ -337,24 +350,35 @@ public class PuzzleGameAlgo {
      * (its use for the main of the program).
      *
      * @param algorithm - the algorithm we will use.
+     * @return - the ans of the algorithms.
      */
-    public void collAlgorithm(String algorithm) {
+    public String collAlgorithm(String algorithm) {
+        String ans = "";
         switch (algorithm) {
             case "BFS":
-                this.BFS(this.getInitialState(), this.getGoals());
+                ans =this.BFS(this.getInitialState(), this.getGoals());
                 break;
             case "DFID":
-                this.DFID(this.getInitialState(), this.getGoals());
+                ans =this.DFID(this.getInitialState(), this.getGoals());
                 break;
             case "A*":
-                this.AStar(this.getInitialState(), this.getGoals());
+                ans = this.AStar(this.getInitialState(), this.getGoals());
                 break;
             case "IDA*":
-                this.IDAStar(this.getInitialState(), this.getGoals());
+                ans =this.IDAStar(this.getInitialState(), this.getGoals());
                 break;
             case "DFBnB":
-                this.DFBnB(this.getInitialState(), this.getGoals());
+                ans = this.DFBnB(this.getInitialState(), this.getGoals());
                 break;
+        }
+        return ans;
+    }
+
+    public void openListPrint(Hashtable<String, State> openList, boolean withOpen){
+        if(withOpen == true){
+            for(String key : openList.keySet()){
+                System.out.println(key);
+            }
         }
     }
 
@@ -383,9 +407,10 @@ public class PuzzleGameAlgo {
 
         Vector<State> vec = new Vector<>();
         vec.add(end);
-        PuzzleGameAlgo puzzle = new PuzzleGameAlgo(start, vec);
+        File file = new File("");
+        PuzzleGameAlgo puzzle = new PuzzleGameAlgo(start, vec, false);
         double startTime = System.currentTimeMillis();
-        puzzle.AStar(puzzle.initialState, puzzle.goals);
+        System.out.println(puzzle.IDAStar(puzzle.initialState, puzzle.goals));
         double stopTime = System.currentTimeMillis();
         System.out.println((stopTime - startTime) / 1000 + " second");
 
