@@ -38,7 +38,7 @@ public class Ex1 {
     }
 
 
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args) throws IOException {
 
         boolean withOpen = false;
         boolean withTime = false;
@@ -48,7 +48,7 @@ public class Ex1 {
         String[] rowAndColStr;
 
 
-        File file = new File("input1.txt");
+        File file = new File("input.txt");
         Scanner scanner = new Scanner(file);
 
         //check which algorithms to use.
@@ -120,27 +120,24 @@ public class Ex1 {
         v.add(goal);
 
         //create output file.
-        File outPutFile = new File("output.txt");
-
         //initialize the ans for the output file
         String ans = "";
         PuzzleGameAlgo puzzle = new PuzzleGameAlgo(start, v, withOpen);
-        long startTime = System.currentTimeMillis();
+        long startTime = System.nanoTime();
         ans = puzzle.collAlgorithm(algorithm);
-        long stopTime = System.currentTimeMillis();
+        long stopTime = System.nanoTime();
         if (withTime == true) {
-            ans += ((stopTime - startTime) / 1000) + " second";
+            ans += ((stopTime - startTime) / 1000000000) + " second";
         }
-        BufferedWriter output = null;
         try {
-            output = new BufferedWriter(new FileWriter(outPutFile));
-            output.write(ans);
-            output.close();
+            FileWriter myWriter = new FileWriter("output.txt");
+            myWriter.write(ans);
+            myWriter.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+
     }
-
-
 }
 

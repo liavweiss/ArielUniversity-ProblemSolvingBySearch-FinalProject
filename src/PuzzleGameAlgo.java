@@ -1,7 +1,4 @@
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.*;
 import java.util.Collections;
 
@@ -85,7 +82,7 @@ public class PuzzleGameAlgo {
         openList.put(start.toString(), start);
         numOfState++;
         while (!q.isEmpty()) {
-            openListPrint(openList, this.withOpen);
+            openListPrint(openList, this.withOpen); // if withOpen == true it will print the open list in this level.
             State s = q.poll();
             closedList.put(s.toString(), s);
             openList.remove(s.toString());
@@ -125,7 +122,7 @@ public class PuzzleGameAlgo {
         for (int depth = 1; depth < Integer.MAX_VALUE; depth++) {
             Hashtable<String, State> openList = new Hashtable<>();
             String result = limitedDFS(start, Goals, depth, openList);
-            if (!result.equals(cutoff)) return "no path";
+            if (!result.equals(cutoff)) return result;
         }
         return "no path";
     }
@@ -143,11 +140,12 @@ public class PuzzleGameAlgo {
     private String limitedDFS(State start, Vector<State> Goals, int limit, Hashtable<String, State> openList) {
         String cutOff = "cutOff";
         if (Goals.contains(start)) {
-            print(start);
+            return print(start);
         } else if (limit == 0) {
             return "cutOff";
         } else {
             String isCutOff = "false";
+            openListPrint(openList, this.withOpen); // if withOpen == true it will print the open list in this level.
             openList.put(start.toString(), start);
             ArrayList<State> arrState = start.performingOperators(start.getBoard(), start.getI1(), start.getJ1(), start.getI2(), start.getJ2());
             for (State s : arrState) {
@@ -169,9 +167,22 @@ public class PuzzleGameAlgo {
                 return "fail";
             }
         }
-        return "";
     }
 
+    /**
+     * A* is an informed search algorithm, meaning that it is formulated in terms of weighted graphs:
+     * starting from a specific starting state of a puzzle game, it aims to find a path to the given goal state having the smallest cost
+     * It does this by priority queue at each iteration of its main loop, A* needs to determine which of its paths to extend.
+     * At each iteration of its main loop, A* needs to determine which of its paths to extend.
+     * It does so based on the cost of the path and an estimate of the cost required to extend the path all the way to the goal. Specifically,
+     * A* selects the path that minimizes, do that by: f(n)=g(n)+h(n)
+     * where n is the next node on the path, g(n) is the cost of the path from the start node to n, and h(n) is a heuristic function that estimates
+     * the cost of the cheapest path from n to the goal.
+     *
+     * @param start - the state we start from him.
+     * @param Goals - vector(list) of the goals state.
+     * @return - the ans of the algorithms.
+     */
     public String AStar(State start, Vector<State> Goals) {
         PriorityQueue<State> pq = new PriorityQueue<>();
         Hashtable<String, State> closedList = new Hashtable<>();
@@ -180,7 +191,7 @@ public class PuzzleGameAlgo {
         numOfState++;
         openList.put(start.toString(), start);
         while (!pq.isEmpty()) {
-            openListPrint(openList, this.withOpen);
+            openListPrint(openList, this.withOpen); // if withOpen == true it will print the open list in this level.
             State s = pq.remove();
             openList.remove(s.toString());
             if (Goals.contains(s)) {
@@ -205,6 +216,15 @@ public class PuzzleGameAlgo {
         return "no path";
     }
 
+    /**
+     * this algorithm perform at each iteration a depth-first search, cutting off a branch when its total cost f(n)=g(n)+h(n) exceeds a given threshold.
+     * This threshold starts at the estimate of the cost at the initial state, and increases for each iteration of the algorithm.
+     * At each iteration, the threshold used for the next iteration is the minimum cost of all values that exceeded the current threshold.
+     *
+     * @param start - the state we start from him.
+     * @param Goals - vector(list) of the goals state.
+     * @return - the ans of the algorithms.
+     */
     public String IDAStar(State start, Vector<State> Goals) {
         Stack<State> st = new Stack<>();
         Hashtable<String, State> openList = new Hashtable<>();
@@ -215,7 +235,7 @@ public class PuzzleGameAlgo {
             st.add(start);
             openList.put(start.toString(), start);
             while (!st.isEmpty()) {
-                openListPrint(openList, this.withOpen);
+                openListPrint(openList, this.withOpen); // if withOpen == true it will print the open list in this level.
                 State s = st.pop();
                 if (s.getTag().equals("out")) {
                     openList.remove(s.toString());
@@ -257,15 +277,26 @@ public class PuzzleGameAlgo {
         return "no path";
     }
 
+    /**
+     * This algorithm works like a simple limited DFS but when finding the first solution the cost of that solution is
+     * stored in t(threshold) from this point on, each time the cost of the new path exceeds or equals t, that branch is pruned and we continue checking the
+     * next one each time we reach a path that costs less than t we change t to this cost and update the best solution.
+     * The search ends when we finish checking the whole tree.
+     *
+     * @param start - the state we start from him.
+     * @param Goals - vector(list) of the goals state.
+     * @return - the ans of the algorithms.
+     */
     public String DFBnB(State start, Vector<State> Goals) {
         Stack<State> st = new Stack<>();
         Hashtable<String, State> openList = new Hashtable<>();
         st.push(start);
+        String ans = "no path";
         openList.put(start.toString(), start);
         int infinity = Integer.MAX_VALUE;
         int t = infinity;
         while (!st.isEmpty()) {
-            openListPrint(openList, this.withOpen);
+            openListPrint(openList, this.withOpen); // if withOpen == true it will print the open list in this level.
             State s = st.pop();
             if (s.getTag().equals("out")) {
                 openList.remove(s.toString());
@@ -273,18 +304,13 @@ public class PuzzleGameAlgo {
                 s.setTag("out");
                 st.push(s);
                 ArrayList<State> arrState = s.performingOperators(s.getBoard(), s.getI1(), s.getJ1(), s.getI2(), s.getJ2());
-                int counter = 0;
-                int n = 0;
                 arrState.sort(State::compareTo);
-                while (n < arrState.size()) {
-                    State operator = arrState.get(n++);
+                for (int i = 0; i < arrState.size(); i++) {
+                    State operator = arrState.get(i);
                     numOfState++;
                     int funcOperator = operator.getCost() + operator.manhattanDistance(operator.getGoal());  // f(operator) = g(operator) + h(operator)
                     if (funcOperator >= t) {
-                        while (counter < arrState.size()) {
-                            arrState.remove(counter++);
-                            n++;
-                        }
+                        arrState.subList(i, arrState.size()).clear();
                     } else if (openList.containsKey(operator.toString()) && openList.get(operator.toString()).equals("out")) {
                         arrState.remove(operator);
                     } else if (openList.containsKey(operator.toString()) && !openList.get(operator.toString()).equals("out")) {
@@ -296,9 +322,10 @@ public class PuzzleGameAlgo {
                             openList.remove(operator.toString());
                         }
                     } else if (Goals.contains(operator)) {
-                        return print(operator);
+                        t = funcOperator;
+                        ans = print(operator);
+                        arrState.clear();
                     }
-                    counter++;
                 }
                 Collections.reverse(arrState);
                 for (State temp : arrState) {
@@ -307,7 +334,7 @@ public class PuzzleGameAlgo {
                 }
             }
         }
-        return "no path";
+        return ans;
     }
 
 
@@ -327,6 +354,12 @@ public class PuzzleGameAlgo {
     }
 
 
+    /**
+     * This method returns the path from state start to state goal.
+     *
+     * @param g - The last state on the path.
+     * @return - path of the states until the goal state.
+     */
     private String print(State g) {
         List<State> tempList = goalList(g);
         if (tempList.isEmpty()) {
@@ -374,6 +407,11 @@ public class PuzzleGameAlgo {
         return ans;
     }
 
+    /**
+     * This method print the open list.
+     * @param openList - the open list with the states.
+     * @param withOpen - flag: if true it will print, if false it will not.
+     */
     public void openListPrint(Hashtable<String, State> openList, boolean withOpen){
         if(withOpen == true){
             for(String key : openList.keySet()){
@@ -409,10 +447,10 @@ public class PuzzleGameAlgo {
         vec.add(end);
         File file = new File("");
         PuzzleGameAlgo puzzle = new PuzzleGameAlgo(start, vec, false);
-        double startTime = System.currentTimeMillis();
+        double startTime = System.nanoTime();
         System.out.println(puzzle.IDAStar(puzzle.initialState, puzzle.goals));
-        double stopTime = System.currentTimeMillis();
-        System.out.println((stopTime - startTime) / 1000 + " second");
+        double stopTime = System.nanoTime();
+        System.out.println((stopTime - startTime) / 1000000000 + " second");
 
 
     }

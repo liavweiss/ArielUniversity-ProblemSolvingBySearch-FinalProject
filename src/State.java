@@ -519,21 +519,6 @@ public class State implements Comparable<State> {
     }
 
 
-//    public int llll(int[][] goal) {
-//        int ans1 = 0, ans2 = 0, ans3 = 0;
-//        int whichOperator = ifClose(this.i1, this.j1, this.i2, this.j2);
-//        int arr[][] = deepCopyArr(this.board);
-//        if (whichOperator == 0) {
-//            ans1 = heuristicFunc(goal);
-//        } else if (whichOperator == 1) {
-//            if (this.j1 != this.board[0].length - 1 && this.j1 != 0) {
-//
-//            }
-//        }
-//
-//        return Math.min(Math.min(ans1,ans2),ans3);
-//    }
-
     /**
      * A heuristic function(Manhattan distance), which measures approximately the distance of each current state to the goal state.
      */
