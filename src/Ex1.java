@@ -1,8 +1,6 @@
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.util.Scanner;
 import java.util.Vector;
-
 
 
 public class Ex1 {
@@ -40,7 +38,6 @@ public class Ex1 {
     }
 
 
-
     public static void main(String[] args) throws FileNotFoundException {
 
         boolean withOpen = false;
@@ -51,7 +48,7 @@ public class Ex1 {
         String[] rowAndColStr;
 
 
-        File file = new File("input2.txt");
+        File file = new File("input1.txt");
         Scanner scanner = new Scanner(file);
 
         //check which algorithms to use.
@@ -106,7 +103,7 @@ public class Ex1 {
             }
             j = 0;
             i++;
-            if(scanner.hasNext()) {
+            if (scanner.hasNext()) {
                 line = scanner.nextLine();
             }
         }
@@ -114,22 +111,32 @@ public class Ex1 {
 
 
         // init all the puzzle game and run the program.
-        int [] emptyPanelStart = emptyPanel(startBoard);
-        State start = new State(startBoard,0,null,goalBoard,emptyPanelStart[0],emptyPanelStart[1],emptyPanelStart[2],emptyPanelStart[3]);
-        int [] emptyPanelGoal = emptyPanel(goalBoard);
-        State goal = new State(goalBoard,0,null,goalBoard,emptyPanelGoal[0],emptyPanelGoal[1],emptyPanelGoal[2],emptyPanelGoal[3]);
+        int[] emptyPanelStart = emptyPanel(startBoard);
+        State start = new State(startBoard, 0, null, goalBoard, emptyPanelStart[0], emptyPanelStart[1], emptyPanelStart[2], emptyPanelStart[3]);
+        int[] emptyPanelGoal = emptyPanel(goalBoard);
+        State goal = new State(goalBoard, 0, null, goalBoard, emptyPanelGoal[0], emptyPanelGoal[1], emptyPanelGoal[2], emptyPanelGoal[3]);
 
         Vector<State> v = new Vector<>();
         v.add(goal);
-        PuzzleGameAlgo puzzle = new PuzzleGameAlgo(start, v);
+        File outPutFile = new File("output.txt");
+        String ans ="";
+        PuzzleGameAlgo puzzle = new PuzzleGameAlgo(start, v, withOpen);
         double startTime = System.currentTimeMillis();
-        puzzle.collAlgorithm(algorithm);
+        ans = puzzle.collAlgorithm(algorithm);
         double stopTime = System.currentTimeMillis();
-        if(withTime == true) {
-            System.out.println((stopTime - startTime) / 1000 + " second");
+        if (withTime == true) {
+            ans +=((stopTime - startTime) / 1000) + " second";
         }
-
-
+        BufferedWriter output = null;
+        try {
+            output = new BufferedWriter(new FileWriter(outPutFile));
+            output.write(ans);
+            output.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
+
 }
+
