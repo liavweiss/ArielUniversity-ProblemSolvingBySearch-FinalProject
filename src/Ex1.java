@@ -118,14 +118,18 @@ public class Ex1 {
 
         Vector<State> v = new Vector<>();
         v.add(goal);
+
+        //create output file.
         File outPutFile = new File("output.txt");
-        String ans ="";
+
+        //initialize the ans for the output file
+        String ans = "";
         PuzzleGameAlgo puzzle = new PuzzleGameAlgo(start, v, withOpen);
-        double startTime = System.currentTimeMillis();
+        long startTime = System.currentTimeMillis();
         ans = puzzle.collAlgorithm(algorithm);
-        double stopTime = System.currentTimeMillis();
+        long stopTime = System.currentTimeMillis();
         if (withTime == true) {
-            ans +=((stopTime - startTime) / 1000) + " second";
+            ans += ((stopTime - startTime) / 1000) + " second";
         }
         BufferedWriter output = null;
         try {
