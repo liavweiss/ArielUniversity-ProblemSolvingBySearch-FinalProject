@@ -232,7 +232,7 @@ public class State implements Comparable<State> {
         if (board[i][j + 1] == 0) {
             return null;
         }
-        if (this.strPre.equals(this.board[i][j + 1] + "R")) {
+        if (this.strPre.equals(this.board[i][j + 1] + "R") || (this.strPre.contains("&" + this.board[i][j + 1] + "R") || (this.strPre.substring(0).equals(this.board[i][j + 1])) && this.strPre.substring(3).equals("R"))) {
             return null;
         }
         State ans = new State(deepCopyArr(board), this.cost + 5, this, this.goalStateBoard, i, j + 1, i2, j2);
@@ -258,7 +258,7 @@ public class State implements Comparable<State> {
         if (board[i][j - 1] == 0) {
             return null;
         }
-        if (this.strPre.equals(this.board[i][j - 1] + "L")) {
+        if (this.strPre.equals(this.board[i][j - 1] + "L") || (this.strPre.contains("&" + this.board[i][j - 1] + "L") || (this.strPre.substring(0).equals(this.board[i][j - 1])) && this.strPre.substring(3).equals("L"))) {
             return null;
         }
         State ans = new State(deepCopyArr(board), this.cost + 5, this, this.goalStateBoard, i, j - 1, i2, j2);
@@ -284,7 +284,7 @@ public class State implements Comparable<State> {
         if (board[i + 1][j] == 0) {
             return null;
         }
-        if (this.strPre.equals(this.board[i + 1][j] + "D")) {
+        if (this.strPre.equals(this.board[i + 1][j] + "D") || (this.strPre.contains("&" + this.board[i + 1][j] + "D") || (this.strPre.substring(0).equals(this.board[i + 1][j])) && this.strPre.substring(3).equals("D"))) {
             return null;
         }
         State ans = new State(deepCopyArr(board), this.cost + 5, this, this.goalStateBoard, i + 1, j, i2, j2);
@@ -310,7 +310,7 @@ public class State implements Comparable<State> {
         if (board[i - 1][j] == 0) {
             return null;
         }
-        if (this.strPre.equals(this.board[i - 1][j] + "U")) {
+        if (this.strPre.equals(this.board[i - 1][j] + "U") || (this.strPre.contains("&" + this.board[i - 1][j] + "U") || (this.strPre.substring(0).equals(this.board[i - 1][j])) && this.strPre.substring(3).equals("U"))) {
             return null;
         }
         State ans = new State(deepCopyArr(board), this.cost + 5, this, this.goalStateBoard, i - 1, j, i2, j2);
@@ -516,7 +516,7 @@ public class State implements Comparable<State> {
             for (int i = 0; i < this.board.length; i++) {
                 for (int j = 0; j < this.board[i].length; j++) {
                     int[] goalPlace = searchGoalNumberPlace(goal, this.board[i][j]);
-                    ans += (this.linearConflict(this.goalStateBoard)*2*5);
+                    ans += (this.linearConflict(this.goalStateBoard) * 2 * 5);
                     ans += ((Math.abs(i - goalPlace[0]) + Math.abs(j - goalPlace[1])) * 5);
                 }
             }
@@ -525,7 +525,7 @@ public class State implements Comparable<State> {
                 for (int j = 0; j < this.board[i].length; j++) {
                     if (this.board[i][j] != 0) {
                         int[] goalPlace = searchGoalNumberPlace(goal, this.board[i][j]);
-                        ans += (this.linearConflict(this.goalStateBoard)*2*3);
+                        ans += (this.linearConflict(this.goalStateBoard) * 2 * 3);
                         ans += ((Math.abs(i - goalPlace[0]) + Math.abs(j - goalPlace[1])) * 3);
                     }
                 }
@@ -555,7 +555,7 @@ public class State implements Comparable<State> {
                             int[] goalPlace2 = searchGoalNumberPlace(goal, this.board[i][k]);
                             int rowGoal2 = goalPlace2[0];
                             int colGoal2 = goalPlace2[1];
-                            if(rowGoal == rowGoal2) {
+                            if (rowGoal == rowGoal2) {
                                 if (colGoal2 < colGoal) {
                                     conflict++;
                                     break;
@@ -567,7 +567,7 @@ public class State implements Comparable<State> {
                             int[] goalPlace3 = searchGoalNumberPlace(goal, this.board[k][j]);
                             int rowGoal3 = goalPlace3[0];
                             int colGoal3 = goalPlace3[1];
-                            if(colGoal == colGoal3) {
+                            if (colGoal == colGoal3) {
                                 if (rowGoal3 < rowGoal) {
                                     conflict++;
                                     break;

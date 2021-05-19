@@ -3,6 +3,14 @@ import java.util.Scanner;
 import java.util.Vector;
 
 
+/**
+ * This class represents the main of the NxM puzzle game.
+ * In this game we will get a start state and a goal state and we will have to find the way to the goal mode.
+ * We do this using 5 algorithms:
+ * 1.BFS.  2.A*  3.IDA*   4.DFID.   5.DFBnB.
+ * In this class we get a txt file and from it we read our initial state and the end state and from them create an output
+ * file which will be our solution ways of the game.
+ */
 public class Ex1 {
 
     /**
@@ -127,7 +135,7 @@ public class Ex1 {
         ans = puzzle.collAlgorithm(algorithm);
         double stopTime = System.nanoTime();
         if (withTime == true) {
-            ans+= ((stopTime - startTime) / 1000000000) + " second";
+            ans += ((stopTime - startTime) / 1000000000) + " second";
         }
         try {
             FileWriter myWriter = new FileWriter("output.txt");
