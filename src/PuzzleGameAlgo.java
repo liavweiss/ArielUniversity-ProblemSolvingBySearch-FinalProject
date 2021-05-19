@@ -1,4 +1,3 @@
-import java.io.File;
 import java.util.*;
 import java.util.Collections;
 
@@ -425,8 +424,8 @@ public class PuzzleGameAlgo {
 //        //input1
 //        int[][] arr = {{1, 2, 3, 4}, {5, 6, 11, 7}, {9, 10, 8, 0}};
 //        int[][] arr2 = {{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 0}};
-//        State start = new State(arr, 0, null, arr2, 2, 3);
-//        State end = new State(arr2, 0, null, arr2, 2, 3);
+//        State start = new State(arr, 0, null, arr2, 2, 3,-1,-1);
+//        State end = new State(arr2, 0, null, arr2, 2, 3,-1,-1);
 
 
         //input2.
@@ -445,10 +444,10 @@ public class PuzzleGameAlgo {
 
         Vector<State> vec = new Vector<>();
         vec.add(end);
-        File file = new File("");
+
         PuzzleGameAlgo puzzle = new PuzzleGameAlgo(start, vec, false);
         double startTime = System.nanoTime();
-        System.out.println(puzzle.IDAStar(puzzle.initialState, puzzle.goals));
+        System.out.println(puzzle.AStar(puzzle.initialState, puzzle.goals));
         double stopTime = System.nanoTime();
         System.out.println((stopTime - startTime) / 1000000000 + " second");
 

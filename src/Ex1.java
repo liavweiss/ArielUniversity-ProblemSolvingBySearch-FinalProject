@@ -123,11 +123,11 @@ public class Ex1 {
         //initialize the ans for the output file
         String ans = "";
         PuzzleGameAlgo puzzle = new PuzzleGameAlgo(start, v, withOpen);
-        long startTime = System.nanoTime();
+        double startTime = System.nanoTime();
         ans = puzzle.collAlgorithm(algorithm);
-        long stopTime = System.nanoTime();
+        double stopTime = System.nanoTime();
         if (withTime == true) {
-            ans += ((stopTime - startTime) / 1000000000) + " second";
+            ans+= ((stopTime - startTime) / 1000000000) + " second";
         }
         try {
             FileWriter myWriter = new FileWriter("output.txt");

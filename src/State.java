@@ -14,6 +14,7 @@ public class State implements Comparable<State> {
      * @param cost - The price it cost us to get from the initial state to the new state.
      * @param pre - Which "state" he came from.
      * @param strPath - string ot the path from start to the goal state.
+     * @param counter - to increase the statID every time.
      * @param stateID - Each situation will have its own ID  to use in  the priority queue,
      * * in a situation where two states have equality in their costs.
      * @param goalStateBoard - the target State, use for priority queue and Manhattan Distance heuristic function.
@@ -28,7 +29,8 @@ public class State implements Comparable<State> {
     private int cost;
     private State pre;
     private String strPath;
-    private static int stateID = 0;
+    private static int counter = 0;
+    private int stateID;
     private int[][] goalStateBoard;
     private String strPre;
     private String tag;
@@ -37,23 +39,6 @@ public class State implements Comparable<State> {
     private int i2;
     private int j2;
 
-
-    /**
-     * Constructor for a game with one empty panel.
-     */
-    public State(int[][] board, int cost, State pre, int[][] goal, int i1, int j1) {
-        this.board = board;
-        this.cost = cost;
-        this.pre = pre;
-        this.goalStateBoard = goal;
-        this.strPre ="";
-        this.tag = "";
-        this.i1 = i1;
-        this.j1 = j1;
-        this.i2 = -1;
-        this.j2 = -1;
-        stateID++;
-    }
 
     /**
      * Constructor for a game with two empty panels.
@@ -69,7 +54,7 @@ public class State implements Comparable<State> {
         this.j1 = j1;
         this.i2 = i2;
         this.j2 = j2;
-        stateID++;
+        this.stateID = counter++;
     }
 
     /**
@@ -514,13 +499,16 @@ public class State implements Comparable<State> {
                 stateList.add(down2);
             }
         }
-
         return stateList;
     }
 
 
     /**
      * A heuristic function(Manhattan distance), which measures approximately the distance of each current state to the goal state.
+     * The distance between two panel  (i1, j1), (i2, j2) measured by |i1 - i2| + |j1 - j2| and the function Summarize how far each
+     * square is from its place in the target position.
+     *
+     * @param goal - the target state board.
      */
     public int manhattanDistance(int[][] goal) {
         int ans = 0;
