@@ -48,7 +48,7 @@ public class State implements Comparable<State> {
         this.cost = cost;
         this.pre = pre;
         this.goalStateBoard = goal;
-        this.strPre ="";
+        this.strPre = "";
         this.tag = "";
         this.i1 = i1;
         this.j1 = j1;
@@ -143,7 +143,7 @@ public class State implements Comparable<State> {
      * This method set the strPre.
      */
     public void setStrPre(String s) {
-         this.strPre = s;
+        this.strPre = s;
     }
 
     /**
@@ -229,14 +229,14 @@ public class State implements Comparable<State> {
         if (j == this.board[0].length - 1) {
             return null;
         }
-        if(board[i][j+1] == 0){
+        if (board[i][j + 1] == 0) {
             return null;
         }
-        if (this.strPre.equals(this.board[i][j+1] +"R")) {
+        if (this.strPre.equals(this.board[i][j + 1] + "R")) {
             return null;
         }
         State ans = new State(deepCopyArr(board), this.cost + 5, this, this.goalStateBoard, i, j + 1, i2, j2);
-        ans.setStrPre(this.board[i][j+1] +"L");
+        ans.setStrPre(this.board[i][j + 1] + "L");
         ans.board[i][j] = ans.board[i][j + 1];
         ans.board[i][j + 1] = 0;
         ans.strPath = ans.board[i][j] + "L";
@@ -255,14 +255,14 @@ public class State implements Comparable<State> {
         if (j == 0) {
             return null;
         }
-        if(board[i][j-1] == 0){
+        if (board[i][j - 1] == 0) {
             return null;
         }
-        if (this.strPre.equals(this.board[i][j-1] + "L")) {
+        if (this.strPre.equals(this.board[i][j - 1] + "L")) {
             return null;
         }
         State ans = new State(deepCopyArr(board), this.cost + 5, this, this.goalStateBoard, i, j - 1, i2, j2);
-        ans.setStrPre(this.board[i][j-1] + "R");
+        ans.setStrPre(this.board[i][j - 1] + "R");
         ans.board[i][j] = ans.board[i][j - 1];
         ans.board[i][j - 1] = 0;
         ans.strPath = ans.board[i][j] + "R";
@@ -281,14 +281,14 @@ public class State implements Comparable<State> {
         if (i == board.length - 1) {
             return null;
         }
-        if(board[i+1][j] == 0){
+        if (board[i + 1][j] == 0) {
             return null;
         }
-        if (this.strPre.equals(this.board[i+1][j] +"D")) {
+        if (this.strPre.equals(this.board[i + 1][j] + "D")) {
             return null;
         }
         State ans = new State(deepCopyArr(board), this.cost + 5, this, this.goalStateBoard, i + 1, j, i2, j2);
-        ans.setStrPre(this.board[i+1][j] +"U");
+        ans.setStrPre(this.board[i + 1][j] + "U");
         ans.board[i][j] = ans.board[i + 1][j];
         ans.board[i + 1][j] = 0;
         ans.strPath = ans.board[i][j] + "U";
@@ -307,14 +307,14 @@ public class State implements Comparable<State> {
         if (i == 0) {
             return null;
         }
-        if(board[i-1][j] == 0){
+        if (board[i - 1][j] == 0) {
             return null;
         }
-        if (this.strPre.equals(this.board[i-1][j] +"U")) {
+        if (this.strPre.equals(this.board[i - 1][j] + "U")) {
             return null;
         }
         State ans = new State(deepCopyArr(board), this.cost + 5, this, this.goalStateBoard, i - 1, j, i2, j2);
-        ans.setStrPre(this.board[i-1][j] +"D");
+        ans.setStrPre(this.board[i - 1][j] + "D");
         ans.board[i][j] = ans.board[i - 1][j];
         ans.board[i - 1][j] = 0;
         ans.strPath = ans.board[i][j] + "D";
@@ -335,11 +335,11 @@ public class State implements Comparable<State> {
         if (j1 == board[0].length - 1) {
             return null;
         }
-        if (this.strPre.equals(this.board[i1][j1+1] +"&"+ this.board[i2][j2+1] +"R")) {
+        if (this.strPre.equals(this.board[i1][j1 + 1] + "&" + this.board[i2][j2 + 1] + "R")) {
             return null;
         }
         State ans = new State(deepCopyArr(board), this.cost + 6, this, this.goalStateBoard, i1, j1 + 1, i2, j2 + 1);
-        ans.setStrPre(this.board[i1][j1+1] +"&"+ this.board[i2][j2+1] +"L");
+        ans.setStrPre(this.board[i1][j1 + 1] + "&" + this.board[i2][j2 + 1] + "L");
         ans.board[i1][j1] = ans.board[i1][j1 + 1];
         ans.board[i1][j1 + 1] = 0;
         ans.board[i2][j2] = ans.board[i2][j2 + 1];
@@ -362,11 +362,11 @@ public class State implements Comparable<State> {
         if (j1 == 0) {
             return null;
         }
-        if (this.strPre.equals(this.board[i1][j1-1] +"&"+ this.board[i2][j2-1] +"L")) {
+        if (this.strPre.equals(this.board[i1][j1 - 1] + "&" + this.board[i2][j2 - 1] + "L")) {
             return null;
         }
         State ans = new State(deepCopyArr(board), this.cost + 6, this, this.goalStateBoard, i1, j1 - 1, i2, j2 - 1);
-        ans.setStrPre(this.board[i1][j1-1] +"&"+ this.board[i2][j2-1] +"R");
+        ans.setStrPre(this.board[i1][j1 - 1] + "&" + this.board[i2][j2 - 1] + "R");
         ans.board[i1][j1] = ans.board[i1][j1 - 1];
         ans.board[i1][j1 - 1] = 0;
         ans.board[i2][j2] = ans.board[i2][j2 - 1];
@@ -389,11 +389,11 @@ public class State implements Comparable<State> {
         if (i1 == board.length - 1) {
             return null;
         }
-        if (this.strPre.equals(this.board[i1+1][j1] +"&"+ this.board[i2+1][j2] +"D")) {
+        if (this.strPre.equals(this.board[i1 + 1][j1] + "&" + this.board[i2 + 1][j2] + "D")) {
             return null;
         }
         State ans = new State(deepCopyArr(board), this.cost + 7, this, this.goalStateBoard, i1 + 1, j1, i2 + 1, j2);
-        ans.setStrPre(this.board[i1+1][j1] +"&"+ this.board[i2+1][j2] +"U");
+        ans.setStrPre(this.board[i1 + 1][j1] + "&" + this.board[i2 + 1][j2] + "U");
         ans.board[i1][j1] = ans.board[i1 + 1][j1];
         ans.board[i1 + 1][j1] = 0;
         ans.board[i2][j2] = ans.board[i2 + 1][j2];
@@ -416,11 +416,11 @@ public class State implements Comparable<State> {
         if (i1 == 0) {
             return null;
         }
-        if (this.strPre.equals(this.board[i1-1][j1] +"&"+ this.board[i2-1][j2] +"U")) {
+        if (this.strPre.equals(this.board[i1 - 1][j1] + "&" + this.board[i2 - 1][j2] + "U")) {
             return null;
         }
         State ans = new State(deepCopyArr(board), this.cost + 7, this, this.goalStateBoard, i1 - 1, j1, i2 - 1, j2);
-        ans.setStrPre(this.board[i1-1][j1] +"&"+ this.board[i2-1][j2] +"D");
+        ans.setStrPre(this.board[i1 - 1][j1] + "&" + this.board[i2 - 1][j2] + "D");
         ans.board[i1][j1] = ans.board[i1 - 1][j1];
         ans.board[i1 - 1][j1] = 0;
         ans.board[i2][j2] = ans.board[i2 - 1][j2];
@@ -516,21 +516,69 @@ public class State implements Comparable<State> {
             for (int i = 0; i < this.board.length; i++) {
                 for (int j = 0; j < this.board[i].length; j++) {
                     int[] goalPlace = searchGoalNumberPlace(goal, this.board[i][j]);
-                    ans += ((Math.abs(i - goalPlace[0]) + Math.abs(j - goalPlace[1]))*5);
+                    ans += (this.linearConflict(this.goalStateBoard)*2*5);
+                    ans += ((Math.abs(i - goalPlace[0]) + Math.abs(j - goalPlace[1])) * 5);
                 }
             }
-        }
-        else{
+        } else {
             for (int i = 0; i < this.board.length; i++) {
                 for (int j = 0; j < this.board[i].length; j++) {
-                    if(this.board[i][j] != 0) {
+                    if (this.board[i][j] != 0) {
                         int[] goalPlace = searchGoalNumberPlace(goal, this.board[i][j]);
+                        ans += (this.linearConflict(this.goalStateBoard)*2*3);
                         ans += ((Math.abs(i - goalPlace[0]) + Math.abs(j - goalPlace[1])) * 3);
                     }
                 }
             }
         }
         return ans;
+    }
+
+    /**
+     * This method check if Two panels p1 and p2 are in a linear conflict if p1 and p2 are in the same line, the goal positions
+     * of p1 and p2 are both in that line, p1 is to the right of p2 and goal position of p1 is to the left of the goal position of p2.
+     * and return the number of conflicts between different panels.
+     *
+     * @param goal - the target state board.
+     * @return
+     */
+    private int linearConflict(int[][] goal) {
+        int conflict = 0;
+        for (int i = 0; i < this.board.length; i++) {
+            for (int j = 0; j < this.board[i].length; j++) {
+                if (this.board[i][j] != 0) {
+                    int[] goalPlace = searchGoalNumberPlace(goal, this.board[i][j]);
+                    int rowGoal = goalPlace[0];
+                    int colGoal = goalPlace[1];
+                    if (i == rowGoal) {
+                        for (int k = j + 1; k < this.board[i].length; k++) {
+                            int[] goalPlace2 = searchGoalNumberPlace(goal, this.board[i][k]);
+                            int rowGoal2 = goalPlace2[0];
+                            int colGoal2 = goalPlace2[1];
+                            if(rowGoal == rowGoal2) {
+                                if (colGoal2 < colGoal) {
+                                    conflict++;
+                                    break;
+                                }
+                            }
+                        }
+                    } else if (j == colGoal) {
+                        for (int k = i + 1; k < this.board.length; k++) {
+                            int[] goalPlace3 = searchGoalNumberPlace(goal, this.board[k][j]);
+                            int rowGoal3 = goalPlace3[0];
+                            int colGoal3 = goalPlace3[1];
+                            if(colGoal == colGoal3) {
+                                if (rowGoal3 < rowGoal) {
+                                    conflict++;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return conflict;
     }
 
 

@@ -422,17 +422,17 @@ public class PuzzleGameAlgo {
 
     public static void main(String[] args) {
 //        //input1
-//        int[][] arr = {{1, 2, 3, 4}, {5, 6, 11, 7}, {9, 10, 8, 0}};
-//        int[][] arr2 = {{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 0}};
-//        State start = new State(arr, 0, null, arr2, 2, 3,-1,-1);
-//        State end = new State(arr2, 0, null, arr2, 2, 3,-1,-1);
+        int[][] arr = {{1, 2, 3, 4}, {5, 6, 11, 7}, {9, 10, 8, 0}};
+        int[][] arr2 = {{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 0}};
+        State start = new State(arr, 0, null, arr2, 2, 3,-1,-1);
+        State end = new State(arr2, 0, null, arr2, 2, 3,-1,-1);
 
 
         //input2.
-        int[][] arr = {{1, 0, 4}, {3, 5, 6}, {2, 0, 7}};
-        int[][] arr2 = {{1, 2, 3}, {4, 5, 6}, {7, 0, 0}};
-        State start = new State(arr, 0, null, arr2, 0, 1, 2, 1);
-        State end = new State(arr2, 0, null, arr2, 2, 1, 2, 2);
+//        int[][] arr = {{1, 0, 4}, {3, 5, 6}, {2, 0, 7}};
+//        int[][] arr2 = {{1, 2, 3}, {4, 5, 6}, {7, 0, 0}};
+//        State start = new State(arr, 0, null, arr2, 0, 1, 2, 1);
+//        State end = new State(arr2, 0, null, arr2, 2, 1, 2, 2);
 
 //        //my input
 //        int[][] arr = {{2,3},
@@ -447,7 +447,7 @@ public class PuzzleGameAlgo {
 
         PuzzleGameAlgo puzzle = new PuzzleGameAlgo(start, vec, false);
         double startTime = System.nanoTime();
-        System.out.println(puzzle.AStar(puzzle.initialState, puzzle.goals));
+        System.out.println(puzzle.DFBnB(puzzle.initialState, puzzle.goals));
         double stopTime = System.nanoTime();
         System.out.println((stopTime - startTime) / 1000000000 + " second");
 
