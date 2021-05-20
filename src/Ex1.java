@@ -10,6 +10,8 @@ import java.util.Vector;
  * 1.BFS.  2.A*  3.IDA*   4.DFID.   5.DFBnB.
  * In this class we get a txt file and from it we read our initial state and the end state and from them create an output
  * file which will be our solution ways of the game.
+ *
+ * @Author Liav Weiss.
  */
 public class Ex1 {
 

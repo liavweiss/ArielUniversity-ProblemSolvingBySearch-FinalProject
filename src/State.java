@@ -433,6 +433,10 @@ public class State implements Comparable<State> {
      * This method returns all the new states that can be created by running all possible operators on the given board.
      * We will first check whether it is possible to move two squares vertically or horizontally and then we will
      * perform all the possible operators on the board.
+     * The order is:
+     * 2L, 2U, 2R, 2D.
+     * L, U, R, D.
+     * in case were (i1,j1) is lefter or upper then (j1,j2) its will do first (i1,j1).
      *
      * @param board - The given board.
      * @param i1    - The row that containing an empty panel.
@@ -465,40 +469,161 @@ public class State implements Comparable<State> {
             }
         }
 
-        State left = moveLeft(board, i1, j1, i2, j2);
-        State up = moveUp(board, i1, j1, i2, j2);
-        State right = moveRight(board, i1, j1, i2, j2);
-        State down = moveDown(board, i1, j1, i2, j2);
-        if (!stateList.contains(left) && left != null) {
-            stateList.add(left);
-        }
-        if (!stateList.contains(up) && up != null) {
-            stateList.add(up);
-        }
-        if (!stateList.contains(right) && right != null) {
-            stateList.add(right);
-        }
-        if (!stateList.contains(down) && down != null) {
-            stateList.add(down);
-        }
-        if (i2 != -1 && i1 != -1) {
-            State left2 = moveLeft(board, i2, j2, i1, j1);
-            State up2 = moveUp(board, i2, j2, i1, j1);
-            State right2 = moveRight(board, i2, j2, i1, j1);
-            State down2 = moveDown(board, i2, j2, i1, j1);
-            if (!stateList.contains(left2) && left2 != null) {
-                stateList.add(left2);
+        if (i2 != -1 && i1 != -1) {  // meaning there is two empty panels.
+            if (i1 < i2) {           //(i1,j1) is upper then (j1,j2) its will do first (i1,j1).
+                State left = moveLeft(board, i1, j1, i2, j2);
+                State up = moveUp(board, i1, j1, i2, j2);
+                State right = moveRight(board, i1, j1, i2, j2);
+                State down = moveDown(board, i1, j1, i2, j2);
+                if (!stateList.contains(left) && left != null) {
+                    stateList.add(left);
+                }
+                if (!stateList.contains(up) && up != null) {
+                    stateList.add(up);
+                }
+                if (!stateList.contains(right) && right != null) {
+                    stateList.add(right);
+                }
+                if (!stateList.contains(down) && down != null) {
+                    stateList.add(down);
+                }
+                State left2 = moveLeft(board, i2, j2, i1, j1);
+                State up2 = moveUp(board, i2, j2, i1, j1);
+                State right2 = moveRight(board, i2, j2, i1, j1);
+                State down2 = moveDown(board, i2, j2, i1, j1);
+                if (!stateList.contains(left2) && left2 != null) {
+                    stateList.add(left2);
+                }
+                if (!stateList.contains(up2) && up2 != null) {
+                    stateList.add(up2);
+                }
+                if (!stateList.contains(right2) && right2 != null) {
+                    stateList.add(right2);
+                }
+                if (!stateList.contains(down2) && down2 != null) {
+                    stateList.add(down2);
+                }
+            } else if (i1 == i2) {
+                if (j1 < j2) {     //(i1,j1) is lefter then (i2,j2) its will do first (i1,j1).
+                    State left = moveLeft(board, i1, j1, i2, j2);
+                    State up = moveUp(board, i1, j1, i2, j2);
+                    State right = moveRight(board, i1, j1, i2, j2);
+                    State down = moveDown(board, i1, j1, i2, j2);
+                    if (!stateList.contains(left) && left != null) {
+                        stateList.add(left);
+                    }
+                    if (!stateList.contains(up) && up != null) {
+                        stateList.add(up);
+                    }
+                    if (!stateList.contains(right) && right != null) {
+                        stateList.add(right);
+                    }
+                    if (!stateList.contains(down) && down != null) {
+                        stateList.add(down);
+                    }
+                    State left2 = moveLeft(board, i2, j2, i1, j1);
+                    State up2 = moveUp(board, i2, j2, i1, j1);
+                    State right2 = moveRight(board, i2, j2, i1, j1);
+                    State down2 = moveDown(board, i2, j2, i1, j1);
+                    if (!stateList.contains(left2) && left2 != null) {
+                        stateList.add(left2);
+                    }
+                    if (!stateList.contains(up2) && up2 != null) {
+                        stateList.add(up2);
+                    }
+                    if (!stateList.contains(right2) && right2 != null) {
+                        stateList.add(right2);
+                    }
+                    if (!stateList.contains(down2) && down2 != null) {
+                        stateList.add(down2);
+                    }
+                } else {      //(i2,j2) is lefter then (i1,j1) its will do first (i2,j2)
+                    State left2 = moveLeft(board, i2, j2, i1, j1);
+                    State up2 = moveUp(board, i2, j2, i1, j1);
+                    State right2 = moveRight(board, i2, j2, i1, j1);
+                    State down2 = moveDown(board, i2, j2, i1, j1);
+                    if (!stateList.contains(left2) && left2 != null) {
+                        stateList.add(left2);
+                    }
+                    if (!stateList.contains(up2) && up2 != null) {
+                        stateList.add(up2);
+                    }
+                    if (!stateList.contains(right2) && right2 != null) {
+                        stateList.add(right2);
+                    }
+                    if (!stateList.contains(down2) && down2 != null) {
+                        stateList.add(down2);
+                    }
+                    State left = moveLeft(board, i1, j1, i2, j2);
+                    State up = moveUp(board, i1, j1, i2, j2);
+                    State right = moveRight(board, i1, j1, i2, j2);
+                    State down = moveDown(board, i1, j1, i2, j2);
+                    if (!stateList.contains(left) && left != null) {
+                        stateList.add(left);
+                    }
+                    if (!stateList.contains(up) && up != null) {
+                        stateList.add(up);
+                    }
+                    if (!stateList.contains(right) && right != null) {
+                        stateList.add(right);
+                    }
+                    if (!stateList.contains(down) && down != null) {
+                        stateList.add(down);
+                    }
+                }
+            } else {   //(i2,j2) is upper then (i1,j1) its will do first (i2,j2)
+                State left2 = moveLeft(board, i2, j2, i1, j1);
+                State up2 = moveUp(board, i2, j2, i1, j1);
+                State right2 = moveRight(board, i2, j2, i1, j1);
+                State down2 = moveDown(board, i2, j2, i1, j1);
+                if (!stateList.contains(left2) && left2 != null) {
+                    stateList.add(left2);
+                }
+                if (!stateList.contains(up2) && up2 != null) {
+                    stateList.add(up2);
+                }
+                if (!stateList.contains(right2) && right2 != null) {
+                    stateList.add(right2);
+                }
+                if (!stateList.contains(down2) && down2 != null) {
+                    stateList.add(down2);
+                }
+                State left = moveLeft(board, i1, j1, i2, j2);
+                State up = moveUp(board, i1, j1, i2, j2);
+                State right = moveRight(board, i1, j1, i2, j2);
+                State down = moveDown(board, i1, j1, i2, j2);
+                if (!stateList.contains(left) && left != null) {
+                    stateList.add(left);
+                }
+                if (!stateList.contains(up) && up != null) {
+                    stateList.add(up);
+                }
+                if (!stateList.contains(right) && right != null) {
+                    stateList.add(right);
+                }
+                if (!stateList.contains(down) && down != null) {
+                    stateList.add(down);
+                }
             }
-            if (!stateList.contains(up2) && up2 != null) {
-                stateList.add(up2);
+        } else {   // there is one empty panel on the board.
+            State left = moveLeft(board, i1, j1, i2, j2);
+            State up = moveUp(board, i1, j1, i2, j2);
+            State right = moveRight(board, i1, j1, i2, j2);
+            State down = moveDown(board, i1, j1, i2, j2);
+            if (!stateList.contains(left) && left != null) {
+                stateList.add(left);
             }
-            if (!stateList.contains(right2) && right2 != null) {
-                stateList.add(right2);
+            if (!stateList.contains(up) && up != null) {
+                stateList.add(up);
             }
-            if (!stateList.contains(down2) && down2 != null) {
-                stateList.add(down2);
+            if (!stateList.contains(right) && right != null) {
+                stateList.add(right);
+            }
+            if (!stateList.contains(down) && down != null) {
+                stateList.add(down);
             }
         }
+
         return stateList;
     }
 
@@ -507,6 +632,7 @@ public class State implements Comparable<State> {
      * A heuristic function(Manhattan distance), which measures approximately the distance of each current state to the goal state.
      * The distance between two panel  (i1, j1), (i2, j2) measured by |i1 - i2| + |j1 - j2| and the function Summarize how far each
      * square is from its place in the target position.
+     * The heuristic function check if there is a conflict between two panels or more with the linear conflict function.
      *
      * @param goal - the target state board.
      */
