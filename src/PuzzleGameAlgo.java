@@ -416,9 +416,11 @@ public class PuzzleGameAlgo {
      */
     public void openListPrint(Hashtable<String, State> openList, boolean withOpen){
         if(withOpen == true){
+            System.out.println("start");
             for(String key : openList.keySet()){
                 System.out.println(key);
             }
+            System.out.println("end");
         }
     }
 }
