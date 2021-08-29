@@ -58,7 +58,7 @@ public class Ex1 {
         String[] rowAndColStr;
 
 
-        File file = new File("input.txt");
+        File file = new File("input2.txt");
         Scanner scanner = new Scanner(file);
 
         //check which algorithms to use.
@@ -132,9 +132,30 @@ public class Ex1 {
         //create output file.
         //initialize the ans for the output file
         String ans = "";
-        PuzzleGameAlgo puzzle = new PuzzleGameAlgo(start, v, withOpen);
+        PuzzleGameAlgo222 puzzle = new PuzzleGameAlgo222(start, v, withOpen);
         double startTime = System.nanoTime();
-        ans = puzzle.collAlgorithm(algorithm);
+        switch (algorithm) {
+            case "BFS":
+                Algo bfs = new BFS(start, v, withOpen);
+                ans = bfs.Algo();
+                break;
+            case "DFID":
+                Algo dfid = new DFID(start, v, withOpen);
+                ans = dfid.Algo();
+                break;
+            case "A*":
+                Algo astar = new AStar(start, v, withOpen);
+                ans = astar.Algo();
+                break;
+            case "IDA*":
+                Algo idastar = new IDAStar(start, v, withOpen);
+                ans = idastar.Algo();
+                break;
+            case "DFBnB":
+                Algo dfbnb = new DFBnB(start, v, withOpen);
+                ans = dfbnb.Algo();
+                break;
+        }
         double stopTime = System.nanoTime();
         if (withTime == true) {
             ans += ((stopTime - startTime) / 1000000000) + " second";
