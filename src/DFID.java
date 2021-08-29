@@ -2,6 +2,14 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Vector;
 
+/**
+ * DFID first performs a DFS to depth one. Then starts over executing DFS to depth two.
+ * Continue to run DFS to successively greater depth until a solution is found.
+ * Do this using the method limitedDFS.
+ * Time complexity: O(b^d).
+ * Space complexity: O(db) -> O(d).
+ * (Where b is branching factor and d is the maximum depth of search tree).
+ */
 public class DFID extends Algo{
 
     /**
@@ -15,16 +23,6 @@ public class DFID extends Algo{
         super(initialState, g, withOpen);
     }
 
-    /**
-     * DFID first performs a DFS to depth one. Then starts over executing DFS to depth two.
-     * Continue to run DFS to successively greater depth until a solution is found.
-     * Do this using the method limitedDFS.
-     * Time complexity: O(b^d).
-     * Space complexity: O(db) -> O(d).
-     * (Where b is branching factor and d is the maximum depth of search tree).
-     *
-     * @return - the ans of the algorithms.
-     */
     @Override
     public String Algo() {
         String cutoff = "cutOff";

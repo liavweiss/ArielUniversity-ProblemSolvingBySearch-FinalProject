@@ -5,7 +5,7 @@ import java.util.Vector;
 
 /**
  * This abstract class represents a frame for finding the way to solve the puzzle.(strategy design pattern)
- * The class contain all the necessary thing for solving such as:initialstate,goal etc..
+ * The class contain all the necessary thing for solving such as:initialState,goal etc..
  * You need to extend this class and implements Algo() method.
  */
 public abstract class Algo {
