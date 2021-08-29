@@ -3,8 +3,6 @@
 The final project of the problem-solving by search course 
 Detailed in ex1_2021.pdf
 
-## explanation of the project idea:
-
 ## Program structure:
 
 ### State:
