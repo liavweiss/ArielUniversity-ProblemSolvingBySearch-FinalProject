@@ -1,5 +1,13 @@
 import java.util.*;
 
+/**
+ * This algorithm works like a simple limited DFS but when finding the first solution the cost of that solution is
+ * stored in t(threshold) from this point on, each time the cost of the new path exceeds or equals t, that branch is pruned and we continue checking the
+ * next one each time we reach a path that costs less than t we change t to this cost and update the best solution.
+ * The search ends when we finish checking the whole tree.
+ *
+ * @return - the ans of the algorithms.
+ */
 public class DFBnB extends Algo{
 
     /**
@@ -13,14 +21,6 @@ public class DFBnB extends Algo{
         super(initialState, g, withOpen);
     }
 
-    /**
-     * This algorithm works like a simple limited DFS but when finding the first solution the cost of that solution is
-     * stored in t(threshold) from this point on, each time the cost of the new path exceeds or equals t, that branch is pruned and we continue checking the
-     * next one each time we reach a path that costs less than t we change t to this cost and update the best solution.
-     * The search ends when we finish checking the whole tree.
-     *
-     * @return - the ans of the algorithms.
-     */
     @Override
     public String Algo() {
         Stack<State> st = new Stack<>();

@@ -1,5 +1,16 @@
 import java.util.*;
 
+/**
+ * In this algorithm we will first initialize a queue and hash table.
+ * open list - for check if its contain a certain state in O(1).
+ * close list - for all the state we have finished developing.
+ * We will insert the starting vertex into them,as long as the queue is not empty we will continue
+ * to develop the sons of the state coming out of the queue, and we will put them in the queue.
+ * Each time we remove a state from the queue we will check if it is the target vertex.
+ * Time complexity: O(b^d).
+ * Space complexity: O(b^d).
+ * (Where b is branching factor and d is the solution depth).
+ */
 public class BFS extends Algo {
 
     /**
@@ -13,29 +24,16 @@ public class BFS extends Algo {
         super(initialState, g, withOpen);
     }
 
-    /**
-     * In this algorithm we will first initialize a queue and hash table.
-     * open list - for check if its contain a certain state in O(1).
-     * close list - for all the state we have finished developing.
-     * We will insert the starting vertex into them,as long as the queue is not empty we will continue
-     * to develop the sons of the state coming out of the queue, and we will put them in the queue.
-     * Each time we remove a state from the queue we will check if it is the target vertex.
-     * Time complexity: O(b^d).
-     * Space complexity: O(b^d).
-     * (Where b is branching factor and d is the solution depth).
-     *
-     * @return - the ans of the algorithms.
-     */
     @Override
     public String Algo() {
         if (goals.contains(initialState)) {
-            return print(getInitialState());
+            return print(initialState);
         }
         Queue<State> q = new LinkedList<>();
         Hashtable<String, State> openList = new Hashtable<>();
         Hashtable<String, State> closedList = new Hashtable<>();
-        q.add(getInitialState());
-        openList.put(getInitialState().toString(), getInitialState());
+        q.add(initialState);
+        openList.put(initialState.toString(), initialState);
         numOfState++;
         while (!q.isEmpty()) {
             openListPrint(openList, super.withOpen); // if withOpen == true it will print the open list in this level.
@@ -48,7 +46,7 @@ public class BFS extends Algo {
                 numOfState++;
                 if (!closedList.containsKey(operator.toString())) {
                     if (!openList.containsKey(operator.toString())) {
-                        if (getGoals().contains(operator)) {
+                        if (goals.contains(operator)) {
                             return super.print(operator);
                         } else {
                             q.add(operator);

@@ -3,6 +3,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
 
+/**
+ * This abstract class represents a frame for finding the way to solve the puzzle.(strategy design pattern)
+ * The class contain all the necessary thing for solving such as:initialstate,goal etc..
+ * You need to extend this class and implements Algo() method.
+ */
 public abstract class Algo {
     /**
      * This class has four fields:
@@ -24,24 +29,6 @@ public abstract class Algo {
         this.initialState = initialState;
         this.goals = g;
         this.withOpen = withOpen;
-    }
-
-    /**
-     * This method return the InitialState of this puzzle game (state start).
-     *
-     * @return - InitialState.
-     */
-    protected State getInitialState() {
-        return this.initialState;
-    }
-
-    /**
-     * This method return vector of goals state of this puzzle game.
-     *
-     * @return -  vector of goals.
-     */
-    protected Vector<State> getGoals() {
-        return this.goals;
     }
 
     /**

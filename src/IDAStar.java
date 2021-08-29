@@ -3,6 +3,11 @@ import java.util.Hashtable;
 import java.util.Stack;
 import java.util.Vector;
 
+/**
+ * this algorithm perform at each iteration a depth-first search, cutting off a branch when its total cost f(n)=g(n)+h(n) exceeds a given threshold.
+ * This threshold starts at the estimate of the cost at the initial state, and increases for each iteration of the algorithm.
+ * At each iteration, the threshold used for the next iteration is the minimum cost of all values that exceeded the current threshold.
+ */
 public class IDAStar extends Algo{
 
     /**
@@ -16,13 +21,6 @@ public class IDAStar extends Algo{
         super(initialState, g, withOpen);
     }
 
-    /**
-     * this algorithm perform at each iteration a depth-first search, cutting off a branch when its total cost f(n)=g(n)+h(n) exceeds a given threshold.
-     * This threshold starts at the estimate of the cost at the initial state, and increases for each iteration of the algorithm.
-     * At each iteration, the threshold used for the next iteration is the minimum cost of all values that exceeded the current threshold.
-     *
-     * @return - the ans of the algorithms.
-     */
     @Override
     public String Algo() {
         Stack<State> st = new Stack<>();

@@ -58,7 +58,7 @@ public class Ex1 {
         String[] rowAndColStr;
 
 
-        File file = new File("input2.txt");
+        File file = new File("input3.txt");
         Scanner scanner = new Scanner(file);
 
         //check which algorithms to use.
@@ -132,7 +132,6 @@ public class Ex1 {
         //create output file.
         //initialize the ans for the output file
         String ans = "";
-        PuzzleGameAlgo222 puzzle = new PuzzleGameAlgo222(start, v, withOpen);
         double startTime = System.nanoTime();
         switch (algorithm) {
             case "BFS":
